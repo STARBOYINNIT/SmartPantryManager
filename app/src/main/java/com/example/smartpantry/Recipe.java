@@ -1,0 +1,17 @@
+package com.example.smartpantry;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Recipe {
+    public int id;
+    public String name;
+    public String steps;
+    public List<RecipeIngredient> ingredients = new ArrayList<>();
+
+    public Recipe(int id, String name, String steps) {
+        this.id = id;
+        this.name = name;
+        this.steps = steps;
+    }
+}
