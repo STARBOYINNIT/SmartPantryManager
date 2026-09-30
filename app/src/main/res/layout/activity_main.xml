@@ -12,6 +12,14 @@
         android:textSize="24sp"
         android:textStyle="bold" />
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:text="Track leftovers and see recipes you can cook right now."
+        android:textColor="@color/text"
+        android:textSize="14sp" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -47,7 +55,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:text="Your pantry is empty. Add ingredients to begin."
+        android:text="Your pantry is empty. Add ingredients to begin reducing food waste."
         android:textColor="@color/text"
         android:textSize="16sp"
         android:visibility="gone" />
