@@ -1,6 +1,7 @@
 package com.example.smartpantry;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -43,11 +44,7 @@ public class IngredientFormActivity extends Activity {
         }
 
         saveButton.setOnClickListener(v -> saveIngredient());
-        deleteButton.setOnClickListener(v -> {
-            databaseHelper.deleteIngredient(ingredientId);
-            Toast.makeText(this, "Ingredient deleted", Toast.LENGTH_SHORT).show();
-            finish();
-        });
+        deleteButton.setOnClickListener(v -> confirmDelete());
     }
 
     private void saveIngredient() {
@@ -90,5 +87,18 @@ public class IngredientFormActivity extends Activity {
             Toast.makeText(this, "Ingredient updated", Toast.LENGTH_SHORT).show();
         }
         finish();
+    }
+
+    private void confirmDelete() {
+        new AlertDialog.Builder(this)
+                .setTitle("Delete ingredient?")
+                .setMessage("This will remove the ingredient from your pantry.")
+                .setPositiveButton("Delete", (dialog, which) -> {
+                    databaseHelper.deleteIngredient(ingredientId);
+                    Toast.makeText(this, "Ingredient deleted", Toast.LENGTH_SHORT).show();
+                    finish();
+                })
+                .setNegativeButton("Cancel", null)
+                .show();
     }
 }
