@@ -9,7 +9,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.regex.Pattern;
+
 public class IngredientFormActivity extends Activity {
+    private static final Pattern DATE_PATTERN = Pattern.compile("\\d{4}-\\d{2}-\\d{2}");
+
     private DatabaseHelper databaseHelper;
     private EditText nameInput;
     private EditText quantityInput;
@@ -76,6 +80,10 @@ public class IngredientFormActivity extends Activity {
 
         if (quantity <= 0) {
             quantityInput.setError("Quantity must be greater than zero");
+            return;
+        }
+        if (!expiry.isEmpty() && !DATE_PATTERN.matcher(expiry).matches()) {
+            expiryInput.setError("Use YYYY-MM-DD format");
             return;
         }
 
