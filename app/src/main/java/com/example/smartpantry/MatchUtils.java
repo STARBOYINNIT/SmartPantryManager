@@ -12,6 +12,7 @@ public class MatchUtils {
             pantryByName.put(normalizeName(ingredient.name), ingredient);
         }
 
+        // Strict matching: every required ingredient must be present in enough quantity.
         for (RecipeIngredient required : recipe.ingredients) {
             Ingredient available = pantryByName.get(normalizeName(required.name));
             if (available == null) {
@@ -29,6 +30,7 @@ public class MatchUtils {
     public static String normalizeName(String value) {
         String name = value == null ? "" : value.toLowerCase(Locale.ROOT).trim();
         name = name.replaceAll("[^a-z0-9 ]", "");
+        // Handles simple plural forms such as tomatoes/tomato and berries/berry.
         if (name.endsWith("ies")) {
             name = name.substring(0, name.length() - 3) + "y";
         } else if (name.endsWith("oes")) {
