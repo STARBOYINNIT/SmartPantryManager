@@ -9,10 +9,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.regex.Pattern;
-
-public class IngredientFormActivity extends Activity {
-    private static final Pattern DATE_PATTERN = Pattern.compile("\\d{4}-\\d{2}-\\d{2}");
+public class IngredientFormActivity extends NavigationActivity {
 
     private DatabaseHelper databaseHelper;
     private EditText nameInput;
@@ -39,7 +36,8 @@ public class IngredientFormActivity extends Activity {
             formTitle.setText("Edit Ingredient");
             deleteButton.setVisibility(View.VISIBLE);
             Ingredient ingredient = databaseHelper.getIngredient(ingredientId);
-            if (ingredient != null) {
+            if (ingredient == null) { finish(); return; }
+            if (savedInstanceState == null) {
                 nameInput.setText(ingredient.name);
                 quantityInput.setText(String.valueOf(ingredient.quantity));
                 unitInput.setText(ingredient.unit);
@@ -78,23 +76,33 @@ public class IngredientFormActivity extends Activity {
             return;
         }
 
-        if (quantity <= 0) {
-            quantityInput.setError("Quantity must be greater than zero");
+        if (!IngredientRules.validQuantity(quantity)) {
+            quantityInput.setError("Quantity must be finite and greater than zero");
             return;
         }
-        if (!expiry.isEmpty() && !DATE_PATTERN.matcher(expiry).matches()) {
-            expiryInput.setError("Use YYYY-MM-DD format");
+        if (!expiry.isEmpty() && IngredientRules.parseDate(expiry) == null) {
+            expiryInput.setError("Enter a real date in YYYY-MM-DD format");
             return;
         }
 
-        if (ingredientId == -1) {
-            databaseHelper.addIngredient(name, quantity, unit, expiry);
-            Toast.makeText(this, "Ingredient added", Toast.LENGTH_SHORT).show();
-        } else {
-            databaseHelper.updateIngredient(ingredientId, name, quantity, unit, expiry);
-            Toast.makeText(this, "Ingredient updated", Toast.LENGTH_SHORT).show();
+        try {
+            if (ingredientId == -1) {
+                if (databaseHelper.addIngredient(name, quantity, unit, expiry) == -1) {
+                    Toast.makeText(this, "Unable to save ingredient", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                Toast.makeText(this, "Ingredient added", Toast.LENGTH_SHORT).show();
+            } else {
+                if (databaseHelper.updateIngredient(ingredientId, name, quantity, unit, expiry) != 1) {
+                    Toast.makeText(this, "Ingredient no longer exists", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                Toast.makeText(this, "Ingredient updated", Toast.LENGTH_SHORT).show();
+            }
+            finish();
+        } catch (android.database.SQLException ex) {
+            Toast.makeText(this, "Unable to save. Please retry.", Toast.LENGTH_SHORT).show();
         }
-        finish();
     }
 
     private void confirmDelete() {
@@ -102,7 +110,9 @@ public class IngredientFormActivity extends Activity {
                 .setTitle("Delete ingredient?")
                 .setMessage("This will remove the ingredient from your pantry.")
                 .setPositiveButton("Delete", (dialog, which) -> {
-                    databaseHelper.deleteIngredient(ingredientId);
+                    if (databaseHelper.deleteIngredient(ingredientId) != 1) {
+                        Toast.makeText(this, "Ingredient no longer exists", Toast.LENGTH_SHORT).show(); return;
+                    }
                     Toast.makeText(this, "Ingredient deleted", Toast.LENGTH_SHORT).show();
                     finish();
                 })

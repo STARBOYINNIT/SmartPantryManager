@@ -9,23 +9,30 @@ import android.widget.TextView;
 
 import java.util.List;
 
-public class SuggestedRecipesActivity extends Activity {
+public class SuggestedRecipesActivity extends NavigationActivity {
+    private DatabaseHelper databaseHelper;
+    private ListView recipeList;
+    private TextView noRecipesText;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_suggested_recipes);
-        DatabaseHelper databaseHelper = new DatabaseHelper(this);
-        ListView recipeList = findViewById(R.id.recipeList);
-        TextView noRecipesText = findViewById(R.id.noRecipesText);
+        databaseHelper = new DatabaseHelper(this);
+        recipeList = findViewById(R.id.recipeList);
+        noRecipesText = findViewById(R.id.noRecipesText);
 
-        List<Recipe> recipes = databaseHelper.getSuggestedRecipes();
-        recipeList.setAdapter(new RecipeAdapter(this, recipes));
-        noRecipesText.setVisibility(recipes.isEmpty() ? View.VISIBLE : View.GONE);
         recipeList.setOnItemClickListener((parent, view, position, id) -> {
             Recipe recipe = (Recipe) parent.getItemAtPosition(position);
             Intent intent = new Intent(this, RecipeDetailActivity.class);
             intent.putExtra("recipe_id", recipe.id);
             startActivity(intent);
         });
+    }
+
+    @Override protected void onResume() {
+        super.onResume();
+        List<Recipe> recipes = databaseHelper.getSuggestedRecipes();
+        recipeList.setAdapter(new RecipeAdapter(this, recipes));
+        noRecipesText.setVisibility(recipes.isEmpty() ? View.VISIBLE : View.GONE);
     }
 }

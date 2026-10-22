@@ -36,6 +36,38 @@ The core business rule is implemented in `MatchUtils.canMakeRecipe`. A recipe is
 3. Select an emulator or physical Android device.
 4. Click Run.
 
+The Gradle wrapper pins Gradle 9.1.0. This build was verified with Android SDK
+36, Android Gradle Plugin 9.0.1 and JDK 25. Set `JAVA_HOME` to your JDK and run
+`gradlew.bat assembleDebug` on Windows (`./gradlew assembleDebug` elsewhere).
+Run `test-local.ps1` on Windows to compile and execute 22 pure-Java regression
+checks. No cloud account, map service, location permission or payment API is
+required.
+
+## Final Verification Changes
+
+- Aggregate duplicate pantry rows and duplicate recipe requirements.
+- Compare compatible mass/volume units, including tablespoon/teaspoon volume.
+- Reject non-finite quantities and impossible calendar dates.
+- Refresh recipe results when returning from an edit.
+- Use the toolbar menu to navigate between Pantry, Recipes and Settings.
+- Apply expiry-warning and display-unit preferences to pantry rows.
+- Preserve existing pantry data when reporting a future schema upgrade as
+  unsupported, rather than dropping all tables.
+
+The settings only affect display. They do not change stored ingredient amounts
+or remove expired items from matching. Expiry warnings are informational, not a
+food-safety assessment. Kitchen display converts exact spoon quantities only;
+it does not assume that a mass can be converted into a volume.
+
+## Submission Status
+
+GitHub publication, the narrated live demonstration, signed declaration and
+student review remain outstanding. The earlier silent video is a rehearsal
+aid and predates the final verification fixes. Do not submit it unchanged.
+Review and acknowledge AI development and documentation assistance as required
+by the institution. The local commit count must not be represented as proof
+that development was hosted on GitHub from the start.
+
 ## Suggested Demo Flow
 
 1. Show the pantry list and existing empty state.

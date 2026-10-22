@@ -18,19 +18,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     @Override
+    public void onConfigure(SQLiteDatabase db) {
+        db.setForeignKeyConstraintsEnabled(true);
+    }
+
+    @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE IF NOT EXISTS pantry_items (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, quantity REAL NOT NULL, unit TEXT NOT NULL, expiry_date TEXT)");
         db.execSQL("CREATE TABLE IF NOT EXISTS recipes (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, steps TEXT NOT NULL)");
-        db.execSQL("CREATE TABLE IF NOT EXISTS recipe_ingredients (id INTEGER PRIMARY KEY AUTOINCREMENT, recipe_id INTEGER NOT NULL, name TEXT NOT NULL, quantity REAL NOT NULL, unit TEXT NOT NULL)");
+        db.execSQL("CREATE TABLE IF NOT EXISTS recipe_ingredients (id INTEGER PRIMARY KEY AUTOINCREMENT, recipe_id INTEGER NOT NULL REFERENCES recipes(id) ON DELETE CASCADE, name TEXT NOT NULL, quantity REAL NOT NULL, unit TEXT NOT NULL)");
         seedRecipes(db);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS recipe_ingredients");
-        db.execSQL("DROP TABLE IF EXISTS recipes");
-        db.execSQL("DROP TABLE IF EXISTS pantry_items");
-        onCreate(db);
+        throw new IllegalStateException("A data-preserving migration is required before upgrading this database");
     }
 
     public long addIngredient(String name, double quantity, String unit, String expiryDate) {
@@ -115,6 +117,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     private ContentValues ingredientValues(String name, double quantity, String unit, String expiryDate) {
+        if (name == null || name.trim().isEmpty() || unit == null || unit.trim().isEmpty()
+                || !IngredientRules.validQuantity(quantity)
+                || (expiryDate != null && !expiryDate.trim().isEmpty() && IngredientRules.parseDate(expiryDate.trim()) == null)) {
+            throw new IllegalArgumentException("Invalid pantry ingredient");
+        }
         ContentValues values = new ContentValues();
         values.put("name", name.trim());
         values.put("quantity", quantity);

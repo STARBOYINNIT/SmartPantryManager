@@ -8,7 +8,13 @@ Open the GitHub repository and show the commit history.
 
 Suggested narration:
 
-"This is my Smart Pantry Manager repository. I used Git during development and made incremental commits for the project setup, database, CRUD screens, recipe matching logic, validation, UI improvements, and documentation. The commit history shows the project being developed step by step rather than uploaded only at the end."
+Describe only the verified history. The original local history starts on
+28 September 2026, with several small commits made close together on
+30 September. The final verification fixes were made on 22 October. At the
+time of this audit, GitHub publication is still pending. Do not say that the
+repository was on GitHub from the beginning, or that the commit count alone
+proves sustained development. The brief requires genuine incremental GitHub
+history, not just ten commits. Discuss any shortfall with the lecturer.
 
 ## 2. Live App Demonstration - About 2 to 3 Minutes
 
@@ -50,4 +56,13 @@ Suggested narration:
 
 Suggested narration:
 
-"Smart Pantry Manager meets the assignment requirements by using Java, multiple Android screens, Intents, SQLite persistence, CRUD, list adapters, seeded recipes, and strict recipe matching to help reduce food waste."
+"This walkthrough has shown the pantry workflow, local storage and strict
+recipe matching. My proposed improvements are broader ingredient aliases,
+database migrations and further accessibility testing."
+
+## Recording Reminder
+
+The earlier silent MP4 is a rehearsal aid and predates the final app fixes.
+Record the current app and actual GitHub history, with your own narration.
+Do not present staged database states or a screenshot montage as a live CRUD
+or persistence demonstration. A face camera is optional; your voice is required.

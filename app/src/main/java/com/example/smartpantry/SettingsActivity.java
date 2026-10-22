@@ -8,7 +8,7 @@ import android.widget.CheckBox;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
-public class SettingsActivity extends Activity {
+public class SettingsActivity extends NavigationActivity {
     private static final String PREFS = "smart_pantry_settings";
 
     @Override

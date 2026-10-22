@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
-public class MainActivity extends Activity {
+public class MainActivity extends NavigationActivity {
     private DatabaseHelper databaseHelper;
     private ListView pantryList;
     private TextView emptyText;
