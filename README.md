@@ -61,8 +61,11 @@ it does not assume that a mass can be converted into a volume.
 
 ## Submission Status
 
-GitHub publication, the narrated live demonstration, signed declaration and
-student review remain outstanding. The earlier silent video is a rehearsal
+The source and existing local history were published on 22 October 2026 to
+https://github.com/STARBOYINNIT/SmartPantryManager . This publication preserves
+the original commit dates; it does not establish GitHub hosting from the start.
+The narrated live demonstration, signed declaration and student review remain
+outstanding. The earlier silent video is a rehearsal
 aid and predates the final verification fixes. Do not submit it unchanged.
 Review and acknowledge AI development and documentation assistance as required
 by the institution. The local commit count must not be represented as proof

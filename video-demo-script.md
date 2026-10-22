@@ -11,7 +11,8 @@ Suggested narration:
 Describe only the verified history. The original local history starts on
 28 September 2026, with several small commits made close together on
 30 September. The final verification fixes were made on 22 October. At the
-time of this audit, GitHub publication is still pending. Do not say that the
+GitHub repository was created and the local history pushed on 22 October.
+Do not say that the
 repository was on GitHub from the beginning, or that the commit count alone
 proves sustained development. The brief requires genuine incremental GitHub
 history, not just ten commits. Discuss any shortfall with the lecturer.
